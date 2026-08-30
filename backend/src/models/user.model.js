@@ -13,7 +13,8 @@ email : {
 },
 password:{
     type: String ,
-    required:[true ,"Password is required"]
+    required:[true ,"Password is required"],
+    select : false //when you read user data so password won't be read
 }
 
 })
