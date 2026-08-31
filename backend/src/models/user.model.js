@@ -9,7 +9,7 @@ username:{
 email : {
     type : String ,
     required : [true , "Email is required"],
-    unique: [ture ,"Email is unique"]
+    unique: [true ,"Email is unique"]
 },
 password:{
     type: String ,

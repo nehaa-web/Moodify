@@ -1,13 +1,17 @@
 const userModel = require("../models/user.model");
+const blacklistModel = require("../models/blacklist.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
 async function registerUser(req, res) {
   const { username, email, password } = req.body;
 
-  const isAlreadyRegistered = findOne({
-    $or: [{ username }, { email }],
-  }).select("+password");
+  const isAlreadyRegistered = await userModel
+    .findOne({
+      $or: [{ username }, { email }],
+    })
+    .select("+password");
+
   if (isAlreadyRegistered) {
     return res.status(409).json({
       message:
@@ -47,11 +51,14 @@ async function registerUser(req, res) {
 async function loginUser(req, res) {
   const { username, email, password } = req.body;
 
-  const user = findOne({
-    $or: [{ username }, { email }],
-  });
+  const user = await userModel
+    .findOne({
+      $or: [{ username }, { email }],
+    })
+    .select("+password");
+
   if (!user) {
-    return res.status(400).json({
+    return res.status(404).json({
       message: "Invalid credentials",
     });
   }
@@ -70,7 +77,7 @@ async function loginUser(req, res) {
     { expiresIn: "3d" },
   );
 
-  res.cookie("token".token);
+  res.cookie("token", token);
 
   res.status(201).json({
     message: "User Registored succesfully ",
@@ -92,4 +99,18 @@ async function getMe(req, res) {
   });
 }
 
-module.exports = { registerUser, loginUser, getMe };
+async function logoutUser(req, res) {
+  const token = req.cookies.token;
+
+  res.clearCookie("token");
+
+  await blacklistModel.create({
+    token,
+  });
+
+  res.status(200).json({
+    message : "logout succesfully"
+  })
+}
+
+module.exports = { registerUser, loginUser, getMe, logoutUser };
