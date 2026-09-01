@@ -109,7 +109,7 @@ async function logoutUser(req, res) {
   //   token,
   // });
 
-  await redis.set( token , Data.now().toString())
+  await redis.set( token , Data.now().toString(), "EX" , 60 * 60)
 
   res.status(200).json({
     message : "logout succesfully"

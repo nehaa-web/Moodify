@@ -1,10 +1,8 @@
-import React from 'react'
-import FaceExpression from "./features/Expression/components/FaceExpression"
+import { RouterProvider } from "react-router-dom"
+import { router } from "./features/app.routes"
 const App = () => {
   return (
-    <div>
-      <FaceExpression />
-    </div>
+    <RouterProvider router={router} />
   )
 }
 
