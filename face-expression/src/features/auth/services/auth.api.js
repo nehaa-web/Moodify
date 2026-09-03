@@ -1,3 +1,4 @@
+// API => communicate with backend
 import axios from "axios"
 
 const api = axios.create({
@@ -40,6 +41,16 @@ export async function login( email , password) {
 export async function getMe( ) {
   try {
     const response = await api.get("/get-me")
+    return response.data;
+  } catch (err) {
+      console.log("REGISTER ERROR:", err.response?.data || err.message);
+    throw err;
+  }
+}
+
+export async function logout( ) {
+  try {
+    const response = await api.get("/logout")
     return response.data;
   } catch (err) {
       console.log("REGISTER ERROR:", err.response?.data || err.message);

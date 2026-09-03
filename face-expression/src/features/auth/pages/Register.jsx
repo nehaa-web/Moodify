@@ -1,7 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "../components/Form";
 import { Camera } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+
+const Login = () => {
+
+  const { loading , setRegister } = useAuth()
+
+  const navigate = useNavigate()
+
+  const [username, setUsername] = useState("")
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("") 
+
+const handleSubmit = async (e)=> {
+e.preventDefault()
+await setEmail({username , email , password })
+navigate("/")
+
+}
 
 const Register = () => {
   return (
@@ -18,9 +37,21 @@ const Register = () => {
         {/* form */}
 
         <form className="flex flex-col gap-1">
-          <Form label="Username" placeholder="Enter your username" />
-          <Form label="Email" placeholder="Enter your email" />
-          <Form label="password" placeholder="Enter your password" />
+          <Form 
+          value={username}
+          onChange={(e)=> setUsername(e.target.value)}
+          label="Username"
+           placeholder="Enter your username" />
+          <Form 
+          value={email}
+          onChange={(e)=> setEmail(e.target.value)}
+          label="Email" 
+          placeholder="Enter your email" />
+          <Form 
+          onChange={(e)=> setPassword(e.target.value)}
+          value={password}
+          label="password"
+           placeholder="Enter your password" />
           <button className="p-3 rounded-2xl !mt-3 !text-black active:scale-90 transition-all !py-1  bg-gradient-to-r from-white to-pink-500 text-white ">
             Login
           </button>

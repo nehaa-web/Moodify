@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import Form from "../components/Form";
 import { Camera } from "lucide-react";
 import { Link } from "react-router-dom";
-
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 const Login = () => {
+
+const { loading  handleLogin } = useAuth()
+
+const navigate = useNavigate()
+
+const [email, setEmail] = useState("")
+const [password, setPassword ] = useState("")
+
+async function handleSubmit(e) {
+  e.preventDefault()
+  await handleLogin ({ email , password})
+  navigate("/")
+}
+
+
+
+
   return (
 
     <main className="min-h-screen flex items-center justify-center ">
@@ -20,11 +38,23 @@ const Login = () => {
         {/* form */}
 
         <form className="flex flex-col gap-3">
-          <Form label="Email" placeholder="Enter your email" />
-          <Form label="password" placeholder="Enter your password" />
+
+          <Form 
+          value={email}
+          onChange={(e)=> setEmail(e.target.value)}
+          label="Email" 
+          placeholder="Enter your email" />
+
+          <Form 
+          value={password}
+          onChange={(e)=> setPassword(e.target.value)}
+          label="password" 
+          placeholder="Enter your password" />
+
           <button className="p-3 !mt-5 rounded-2xl !text-black active:scale-90 transition-all !py-1  bg-gradient-to-r from-white to-pink-500 text-white ">
             Login
           </button>
+
         </form>
 
         {/*remember me + forgot password */}
