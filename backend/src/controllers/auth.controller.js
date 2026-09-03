@@ -2,7 +2,7 @@ const userModel = require("../models/user.model");
 const blacklistModel = require("../models/blacklist.model");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
-const redis = require("../config/cache")
+const redis = require("../config/cache");
 
 async function registerUser(req, res) {
   const { username, email, password } = req.body;
@@ -16,7 +16,7 @@ async function registerUser(req, res) {
   if (isAlreadyRegistered) {
     return res.status(409).json({
       message:
-        isUserAlreadyExist.email == email
+        isAlreadyRegistered.email == email
           ? "Email already exist"
           : "Username already exist",
     });
@@ -92,7 +92,7 @@ async function loginUser(req, res) {
 }
 
 async function getMe(req, res) {
-  const user = await userModle.findById(req.user.id);
+  const user = await userModel.findById(req.user.id);
 
   res.status(200).json({
     message: "User fetched succesfully",
@@ -109,11 +109,11 @@ async function logoutUser(req, res) {
   //   token,
   // });
 
-  await redis.set( token , Data.now().toString(), "EX" , 60 * 60)
+  await redis.set(token, Data.now().toString(), "EX", 60 * 60);
 
   res.status(200).json({
-    message : "logout succesfully"
-  })
+    message: "logout succesfully",
+  });
 }
 
 module.exports = { registerUser, loginUser, getMe, logoutUser };
