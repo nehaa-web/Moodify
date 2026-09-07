@@ -18,7 +18,7 @@ async function uploadSong(req, res) {
       buffer: songBuffer,
       filename: tags.title + ".mp3",
       folder: "/moodify/songs",
-    }),
+    }),``
   ]);
 
   const song = await songModel.create({
