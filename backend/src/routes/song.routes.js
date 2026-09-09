@@ -5,7 +5,11 @@ const songController = require("../controllers/song.controller")
 const router = Router()
 
 // POST /api/song/
-router.post("/" , upload.single("song") , songController.uploadSong)
+router.post(
+  "/",
+  upload.any(),
+  songController.uploadSong
+);
 
 // POST /api/song/
 router.get("/" , songController.getSong)
