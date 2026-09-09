@@ -1,12 +1,10 @@
 import { FaceLandmarker, FilesetResolver } from "@mediapipe/tasks-vision";
 
 export const init = async ({ landmarkerRef, streamRef, videoRef }) => {
-  // Load MediaPipe Vision
   const vision = await FilesetResolver.forVisionTasks(
     "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm",
   );
 
-  // Create Face Landmarker
   landmarkerRef.current = await FaceLandmarker.createFromOptions(vision, {
     baseOptions: {
       modelAssetPath:
@@ -17,7 +15,6 @@ export const init = async ({ landmarkerRef, streamRef, videoRef }) => {
     numFaces: 1,
   });
 
-  // Get camera access
   streamRef.current = await navigator.mediaDevices.getUserMedia({
     video: true,
   });
@@ -25,11 +22,9 @@ export const init = async ({ landmarkerRef, streamRef, videoRef }) => {
   videoRef.current.srcObject = streamRef.current;
 
   await videoRef.current.play();
-
-  //   detect();
 };
 
-export const detect = ({ landmarkerRef, videoRef , setExpression}) => {
+export const detect = ({ landmarkerRef, videoRef, setExpression }) => {
   if (!landmarkerRef.current || !videoRef.current) {
     return;
   }
@@ -48,23 +43,29 @@ export const detect = ({ landmarkerRef, videoRef , setExpression}) => {
     const smileLeft = getScore("mouthSmileLeft");
     const smileRight = getScore("mouthSmileRight");
 
-    const jawOpen = getScore("jawOpen");
     const browUp = getScore("browInnerUp");
 
     const frownLeft = getScore("mouthFrownLeft");
     const frownRight = getScore("mouthFrownRight");
 
+    const browDownLeft = getScore("browDownLeft");
+    const browDownRight = getScore("browDownRight");
+    const mouthPress = getScore("mouthPress");
+
     let currentExpression = "Neutral 😐";
 
     if (smileLeft > 0.5 && smileRight > 0.5) {
       currentExpression = "Happy 😄";
-    } else if (jawOpen > 0.2 && browUp > 0.2) {
-      currentExpression = "Surprised 😲";
+    } else if (
+      browDownLeft > 0.3 &&
+      browDownRight > 0.3 &&
+      mouthPress > 0.2
+    ) {
+      currentExpression = "Angry 😠";
     } else if (frownLeft > 0.0001 && frownRight > 0.0001) {
       currentExpression = "Sad 😢";
     }
 
     setExpression(currentExpression);
-    
   }
 };

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect, useContext } from 'react'
 import { SongContext } from '../song.context'
 import { useSong } from '../hooks/useSong'
-
+import "../components/player.scss"
 
 const SPEED_OPTIONS = [0.5, 0.75, 1, 1.25, 1.5, 2]
 
