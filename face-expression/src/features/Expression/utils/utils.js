@@ -52,20 +52,17 @@ export const detect = ({ landmarkerRef, videoRef, setExpression }) => {
     const browDownRight = getScore("browDownRight");
     const mouthPress = getScore("mouthPress");
 
-    let currentExpression = "Neutral 😐";
+    let currentExpression = "neutral";
 
     if (smileLeft > 0.5 && smileRight > 0.5) {
-      currentExpression = "Happy 😄";
-    } else if (
-      browDownLeft > 0.3 &&
-      browDownRight > 0.3 &&
-      mouthPress > 0.2
-    ) {
-      currentExpression = "Angry 😠";
-    } else if (frownLeft > 0.0001 && frownRight > 0.0001) {
-      currentExpression = "Sad 😢";
+      currentExpression = "happy";
+    } else if (browDownLeft > 0.15 && browDownRight > 0.15) {
+      currentExpression = "angry";
+    } else if (frownLeft > 0.001 && frownRight > 0.001) {
+      currentExpression = "sad";
     }
 
     setExpression(currentExpression);
+    return currentExpression;
   }
 };

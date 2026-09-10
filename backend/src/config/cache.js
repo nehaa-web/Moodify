@@ -11,7 +11,7 @@ redis.on( "connect" ,()=>{
 })
 
 redis.on( "err" , (err)=>{
-    console.log(err)
+    console.log("Redis Error:", err)
 })
 
 module.exports = redis

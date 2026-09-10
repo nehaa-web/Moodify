@@ -10,7 +10,12 @@ const Home = () => {
   return (
     <div>
       <Nav/>
-      <FaceExpression onClick={(expression) => { handleGetSong({ mood : expression})}} />
+   <FaceExpression
+  onClick={(expression) => {
+    console.log("MOOD FROM FACE:", expression)
+    handleGetSong({ mood: expression })
+  }}
+/>
       
       <Player />
     </div>
